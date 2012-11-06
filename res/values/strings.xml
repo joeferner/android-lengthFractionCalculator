@@ -1,9 +1,9 @@
 <resources>
 
     <string name="app_name">Length Fraction Slider</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="slider_overlay_description">Slider Overlay</string>
+    <string name="default_exact_value">0.0</string>
 
 </resources>

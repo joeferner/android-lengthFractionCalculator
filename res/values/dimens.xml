@@ -6,4 +6,5 @@
     <dimen name="fractionHeight">60sp</dimen>
     <dimen name="fractionWholeFontSize">20sp</dimen>
     <dimen name="fractionNumDenFontSize">20sp</dimen>
+    <dimen name="fractionMargin">3sp</dimen>
 </resources>

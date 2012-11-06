@@ -6,53 +6,51 @@
     <RelativeLayout
         android:id="@+id/headerLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="@dimen/fractionHeight" >
 
-        <com.fernsroth.lengthfractionslider.FractionView
+        <com.fernsroth.lengthfractioncalculator.FractionView
             android:id="@+id/fractionLeft"
             android:layout_width="@dimen/fractionWidth"
             android:layout_height="@dimen/fractionHeight"
-            android:layout_alignParentLeft="true"
-            android:gravity="left" />
+            android:layout_alignParentLeft="true" />
 
         <TextView
             android:id="@+id/exactInches"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fractionHeight"
             android:layout_toLeftOf="@+id/fractionRight"
             android:layout_toRightOf="@+id/fractionLeft"
             android:gravity="center"
-            android:text="0.0"
+            android:text="@string/default_exact_value"
             android:textSize="@dimen/exactFontSize" />
 
-        <com.fernsroth.lengthfractionslider.FractionView
+        <com.fernsroth.lengthfractioncalculator.FractionView
             android:id="@+id/fractionRight"
             android:layout_width="@dimen/fractionWidth"
             android:layout_height="@dimen/fractionHeight"
-            android:layout_alignParentRight="true"
-            android:gravity="left" />
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
-    <com.fernsroth.lengthfractionslider.RulerView
+    <com.fernsroth.lengthfractioncalculator.RulerView
         android:id="@+id/ruler"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/footerLayout"
         android:layout_below="@+id/headerLayout" >
-    </com.fernsroth.lengthfractionslider.RulerView>
+    </com.fernsroth.lengthfractioncalculator.RulerView>
 
     <LinearLayout
         android:id="@+id/footerLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/fractionHeight"
         android:layout_alignParentBottom="true" >
 
         <TextView
             android:id="@+id/exactMetric"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/fractionHeight"
             android:gravity="center"
-            android:text="0.0"
+            android:text="@string/default_exact_value"
             android:textSize="@dimen/exactFontSize" />
     </LinearLayout>
 
