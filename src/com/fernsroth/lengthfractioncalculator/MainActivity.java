@@ -24,8 +24,8 @@ public class MainActivity extends Activity {
   private FractionView fractionRight;
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public void onCreate(Bundle state) {
+    super.onCreate(state);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.activity_main);
 
@@ -119,8 +119,7 @@ public class MainActivity extends Activity {
           public void onClick(DialogInterface dialog, int whichButton) {
             String valStr = (String) valueSpinnerView.getSelectedItem();
             int val = Integer.parseInt(valStr);
-            fractionLeft.setMaximumDenominator(val);
-            fractionRight.setMaximumDenominator(val);
+            setMaximumDenominator(val);
           }
         });
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -148,6 +147,8 @@ public class MainActivity extends Activity {
         });
       }
     });
+
+    loadState(state);
   }
 
   private interface OnPromptForValueOk {
@@ -180,5 +181,31 @@ public class MainActivity extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.activity_main, menu);
     return true;
+  }
+
+  protected void setMaximumDenominator(int val) {
+    fractionLeft.setMaximumDenominator(val);
+    fractionRight.setMaximumDenominator(val);
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle state) {
+    super.onRestoreInstanceState(state);
+    loadState(state);
+  }
+
+  private void loadState(Bundle state) {
+    if (state == null) {
+      return;
+    }
+    this.ruler.setInches(state.getFloat("inches", 0.0f));
+    setMaximumDenominator(state.getInt("maximumDenominator", 128));
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle state) {
+    state.putFloat("inches", this.ruler.getInches());
+    state.putInt("maximumDenominator", this.fractionLeft.getMaximumDenominator());
+    super.onSaveInstanceState(state);
   }
 }

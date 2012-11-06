@@ -22,7 +22,7 @@ public class RulerView extends View {
   private Paint centerLinePaint;
   private GestureDetector gestureDetector;
   private Scroller scroller;
-  private int nextX;
+  private float nextX;
   private int maxX;
   private float currentX;
   private Paint tickPaint;
@@ -105,7 +105,7 @@ public class RulerView extends View {
 
   protected boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
     synchronized (this) {
-      scroller.fling(nextX, 0, (int) -velocityX, 0, 0, maxX, 0, 0);
+      scroller.fling((int) nextX, 0, (int) -velocityX, 0, 0, maxX, 0, 0);
     }
     requestLayout();
 
@@ -241,7 +241,7 @@ public class RulerView extends View {
   }
 
   public void setInches(float inches) {
-    currentX = inches * PIXELS_PER_INCH;
+    nextX = currentX = inches * PIXELS_PER_INCH;
     notifyOnRulerScrollListeners();
     postInvalidate();
   }
