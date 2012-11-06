@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <com.fernsroth.lengthfractionslider.FractionView
+            android:id="@+id/fractionLeft"
+            android:layout_width="@dimen/fractionWidth"
+            android:layout_height="@dimen/fractionHeight"
+            android:layout_alignParentLeft="true"
+            android:gravity="left" />
+
+        <TextView
+            android:id="@+id/exactInches"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/fractionRight"
+            android:layout_toRightOf="@+id/fractionLeft"
+            android:gravity="center"
+            android:text="0.0"
+            android:textSize="@dimen/exactFontSize" />
+
+        <com.fernsroth.lengthfractionslider.FractionView
+            android:id="@+id/fractionRight"
+            android:layout_width="@dimen/fractionWidth"
+            android:layout_height="@dimen/fractionHeight"
+            android:layout_alignParentRight="true"
+            android:gravity="left" />
+    </RelativeLayout>
+
+    <com.fernsroth.lengthfractionslider.RulerView
+        android:id="@+id/ruler"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/footerLayout"
+        android:layout_below="@+id/headerLayout" >
+    </com.fernsroth.lengthfractionslider.RulerView>
+
+    <LinearLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <TextView
+            android:id="@+id/exactMetric"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0.0"
+            android:textSize="@dimen/exactFontSize" />
+    </LinearLayout>
+
+</RelativeLayout>

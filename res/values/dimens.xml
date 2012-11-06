@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tickFontSize">20sp</dimen>
+    <dimen name="exactFontSize">20sp</dimen>
+    <dimen name="fractionWidth">120sp</dimen>
+    <dimen name="fractionHeight">60sp</dimen>
+    <dimen name="fractionWholeFontSize">20sp</dimen>
+    <dimen name="fractionNumDenFontSize">20sp</dimen>
+</resources>
