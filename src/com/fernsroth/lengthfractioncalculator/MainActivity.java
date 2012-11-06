@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -181,6 +182,28 @@ public class MainActivity extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.activity_main, menu);
     return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+    case R.id.menu_about:
+      showAbout();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  private void showAbout() {
+    Builder alertDialog = new AlertDialog.Builder(this);
+    alertDialog.setTitle("About");
+    alertDialog.setMessage("Length Fraction Calculator\nBy: Joe Ferner");
+    alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int whichButton) {
+
+      }
+    });
+    alertDialog.show();
   }
 
   protected void setMaximumDenominator(int val) {
