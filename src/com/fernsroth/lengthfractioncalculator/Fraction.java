@@ -5,13 +5,16 @@ import android.util.FloatMath;
 public class Fraction {
   public enum RoundingDirection {
     Down, Up
-  };
+  }
+
+  private static final int DEFAULT_MAX_DENOMINATOR = 128;
 
   private float value;
   private int wholeNumber;
   private int numerator;
   private int denominator;
   private RoundingDirection roundingDirection;
+  private int maxDenominator = DEFAULT_MAX_DENOMINATOR;
 
   public Fraction() {
     setValue(0.0f);
@@ -25,12 +28,12 @@ public class Fraction {
     this.value = value;
     this.wholeNumber = (int) FloatMath.floor(this.value);
     float rest = this.value - FloatMath.floor(this.value);
-    this.denominator = 128;
+    this.denominator = this.maxDenominator;
     float floatNumerator = rest * this.denominator;
     if (roundingDirection == RoundingDirection.Up) {
-      this.numerator = (int) Math.ceil(floatNumerator);
+      this.numerator = (int) FloatMath.ceil(floatNumerator);
     } else {
-      this.numerator = (int) Math.floor(floatNumerator);
+      this.numerator = (int) FloatMath.floor(floatNumerator);
     }
     reduce();
   }
@@ -44,6 +47,11 @@ public class Fraction {
     }
     this.numerator = this.numerator / i;
     this.denominator = this.denominator / i;
+
+    if (this.numerator == this.denominator) {
+      this.numerator = 0;
+      this.wholeNumber++;
+    }
   }
 
   public int getWholeNumber() {
@@ -60,5 +68,19 @@ public class Fraction {
 
   public void setRoundingDirection(RoundingDirection roundingDirection) {
     this.roundingDirection = roundingDirection;
+    invalidate();
+  }
+
+  public void setMaximumDenominator(int maxDenominator) {
+    this.maxDenominator = maxDenominator;
+    invalidate();
+  }
+
+  private void invalidate() {
+    setValue(getValue());
+  }
+
+  public int getMaximumDenominator() {
+    return this.maxDenominator;
   }
 }

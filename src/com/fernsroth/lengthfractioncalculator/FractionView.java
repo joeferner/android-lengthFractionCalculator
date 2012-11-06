@@ -118,4 +118,13 @@ public class FractionView extends View {
   public void setRoundingDirection(RoundingDirection roundingDirection) {
     this.value.setRoundingDirection(roundingDirection);
   }
+
+  public void setMaximumDenominator(int maxDenominator) {
+    this.value.setMaximumDenominator(maxDenominator);
+    postInvalidate();
+  }
+
+  public int getMaximumDenominator() {
+    return this.value.getMaximumDenominator();
+  }
 }

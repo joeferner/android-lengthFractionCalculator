@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -43,7 +45,20 @@ public class MainActivity extends Activity {
           }
 
           private float parseInches(String val) {
-            return Float.parseFloat(val);
+            try {
+              return Float.parseFloat(val);
+            } catch (Exception ex) {
+              AlertDialog alertDialog;
+              alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+              alertDialog.setTitle("Parse Error");
+              alertDialog.setMessage("Could not parse inches.");
+              alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+              });
+              alertDialog.show();
+              return 0.0f;
+            }
           }
 
         });
@@ -60,7 +75,20 @@ public class MainActivity extends Activity {
           }
 
           private float parseMillimeters(String val) {
-            return Float.parseFloat(val);
+            try {
+              return Float.parseFloat(val);
+            } catch (Exception ex) {
+              AlertDialog alertDialog;
+              alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+              alertDialog.setTitle("Parse Error");
+              alertDialog.setMessage("Could not parse millimeters.");
+              alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+              });
+              alertDialog.show();
+              return 0.0f;
+            }
           }
 
         });
@@ -69,6 +97,41 @@ public class MainActivity extends Activity {
 
     fractionLeft.setRoundingDirection(Fraction.RoundingDirection.Down);
     fractionRight.setRoundingDirection(Fraction.RoundingDirection.Up);
+
+    OnClickListener fractionClickListener = new OnClickListener() {
+
+      public void onClick(View v) {
+        final Spinner valueSpinnerView = new Spinner(MainActivity.this);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainActivity.this, R.array.maximum_denominator, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valueSpinnerView.setAdapter(adapter);
+        for (int i = 0; i < valueSpinnerView.getCount(); i++) {
+          if (Integer.parseInt((String) valueSpinnerView.getItemAtPosition(i)) == fractionLeft.getMaximumDenominator()) {
+            valueSpinnerView.setSelection(i);
+            break;
+          }
+        }
+
+        Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle("Maximum Denominator");
+        alertDialog.setView(valueSpinnerView);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int whichButton) {
+            String valStr = (String) valueSpinnerView.getSelectedItem();
+            int val = Integer.parseInt(valStr);
+            fractionLeft.setMaximumDenominator(val);
+            fractionRight.setMaximumDenominator(val);
+          }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int whichButton) {
+          }
+        });
+        alertDialog.show();
+      }
+    };
+    fractionLeft.setOnClickListener(fractionClickListener);
+    fractionRight.setOnClickListener(fractionClickListener);
 
     ruler.addOnRulerScrollListener(new OnRulerScrollListener() {
 
