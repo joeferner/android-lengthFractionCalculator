@@ -24,7 +24,7 @@ public class RulerView extends View {
   private Scroller scroller;
   private int nextX;
   private int maxX;
-  private int currentX;
+  private float currentX;
   private Paint tickPaint;
   private int width;
   private int height;
@@ -169,7 +169,7 @@ public class RulerView extends View {
     int minor128TickHeight = height / 40;
     int minorMillimeterTickHeight = height / 22;
     int minorCentimeterTickHeight = height / 7;
-    int scrollLeftX = currentX - centerX;
+    int scrollLeftX = (int) (currentX - centerX);
     float leftInchesX = FloatMath.floor(getInches(scrollLeftX) * 128.0f) / 128.0f;
     float leftMillimetersX = FloatMath.floor(getMillimeters(scrollLeftX));
 
@@ -228,7 +228,7 @@ public class RulerView extends View {
 
   private int getXFromInches(float inches) {
     int centerX = width / 2;
-    int scrollLeftX = currentX - centerX;
+    int scrollLeftX = (int) (currentX - centerX);
     return (int) (inches * PIXELS_PER_INCH) - scrollLeftX;
   }
 
@@ -236,19 +236,19 @@ public class RulerView extends View {
     return getInches(currentX);
   }
 
-  public float getInches(int x) {
+  public float getInches(float x) {
     return x / PIXELS_PER_INCH;
   }
 
   public void setInches(float inches) {
-    currentX = (int) (inches * PIXELS_PER_INCH);
+    currentX = inches * PIXELS_PER_INCH;
     notifyOnRulerScrollListeners();
     postInvalidate();
   }
 
   private int getXFromMillimeters(float mm) {
     int centerX = width / 2;
-    int scrollLeftX = currentX - centerX;
+    int scrollLeftX = (int) (currentX - centerX);
     return (int) (mm * PIXELS_PER_MILLIMETER) - scrollLeftX;
   }
 
@@ -256,7 +256,7 @@ public class RulerView extends View {
     return getInches() * MILLIMETERS_PER_INCH;
   }
 
-  public float getMillimeters(int x) {
+  public float getMillimeters(float x) {
     return getInches(x) * MILLIMETERS_PER_INCH;
   }
 
