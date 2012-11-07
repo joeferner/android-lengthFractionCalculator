@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     exactInches.setOnClickListener(new OnClickListener() {
 
       public void onClick(View v) {
-        promptForValue("Inches", new OnPromptForValueOk() {
+        promptForValue("Inches", ruler.getInches(), new OnPromptForValueOk() {
 
           public void ok(String val) {
             ruler.setInches(parseInches(val));
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
     exactMetric.setOnClickListener(new OnClickListener() {
 
       public void onClick(View v) {
-        promptForValue("Millimeters", new OnPromptForValueOk() {
+        promptForValue("Millimeters", ruler.getMillimeters(), new OnPromptForValueOk() {
 
           public void ok(String val) {
             ruler.setMillimeters(parseMillimeters(val));
@@ -158,8 +158,9 @@ public class MainActivity extends Activity {
 
   }
 
-  protected void promptForValue(String title, final OnPromptForValueOk onOk) {
+  protected void promptForValue(String title, float val, final OnPromptForValueOk onOk) {
     final EditText editValView = new EditText(this);
+    editValView.setText(Float.toString(val));
     editValView.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
     Builder alertDialog = new AlertDialog.Builder(this);
