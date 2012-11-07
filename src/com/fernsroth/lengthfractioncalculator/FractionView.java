@@ -19,6 +19,8 @@ public class FractionView extends View {
   private Rect numBounds = new Rect();
   private Rect denBounds = new Rect();
   private Rect errorBounds = new Rect();
+  private Rect emptyFractionBounds = new Rect();
+  private Rect fractionBounds = new Rect();
   private Paint errorNegPaint;
   private Paint errorPosPaint;
 
@@ -69,7 +71,6 @@ public class FractionView extends View {
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
 
-    int wholeX, wholeY;
     int marginX = margin;
     int marginY = margin;
 
@@ -81,7 +82,6 @@ public class FractionView extends View {
     wholeNumberStr = String.format("%d", this.value.getWholeNumber());
     numeratorStr = String.format("%d", this.value.getNumerator());
     denominatorStr = String.format("%d", this.value.getDenominator());
-
     errorStr = String.format("%.3f\"", this.value.getError());
 
     if (this.value.getNumerator() == 0) {
@@ -92,45 +92,57 @@ public class FractionView extends View {
     }
 
     wholeNumberBounds.setEmpty();
-    if (wholeNumberStr.length() > 0) {
-      wholeNumberPaint.getTextBounds(wholeNumberStr, 0, wholeNumberStr.length(), wholeNumberBounds);
-      wholeNumberBounds.inset(-marginX, -marginY);
-      wholeNumberBounds.offsetTo(0, 0);
-    }
-
-    errorBounds.setEmpty();
-    if (errorStr.length() > 0) {
-      errorNegPaint.getTextBounds(errorStr, 0, errorStr.length(), errorBounds);
-      errorBounds.inset(-marginX, -marginY);
-      errorBounds.offsetTo(0, 0);
-    }
+    wholeNumberPaint.getTextBounds(wholeNumberStr, 0, wholeNumberStr.length(), wholeNumberBounds);
+    wholeNumberBounds.inset(-marginX, -marginY);
+    wholeNumberBounds.offsetTo(0, 0);
 
     numBounds.setEmpty();
-    denBounds.setEmpty();
-    if (numeratorStr.length() > 0) {
-      fractionNumDenPaint.getTextBounds(numeratorStr, 0, numeratorStr.length(), numBounds);
-      numBounds.inset(-marginX, -marginY);
-      numBounds.offsetTo(0, 0);
+    fractionNumDenPaint.getTextBounds(numeratorStr, 0, numeratorStr.length(), numBounds);
+    numBounds.inset(-marginX, -marginY);
+    numBounds.offsetTo(0, 0);
 
-      fractionNumDenPaint.getTextBounds(denominatorStr, 0, denominatorStr.length(), denBounds);
-      denBounds.inset(-marginX, -marginY);
-      denBounds.offsetTo(0, 0);
+    denBounds.setEmpty();
+    fractionNumDenPaint.getTextBounds(denominatorStr, 0, denominatorStr.length(), denBounds);
+    denBounds.inset(-marginX, -marginY);
+    denBounds.offsetTo(0, 0);
+    denBounds.offset(0, numBounds.height());
+
+    if (this.value.getWholeNumber() != 0) {
+      numBounds.offset(wholeNumberBounds.width(), 0);
+      denBounds.offset(wholeNumberBounds.width(), 0);
+    }
+    int numDemWidth = Math.max(numBounds.width(), denBounds.width());
+    numBounds.right = numBounds.left + numDemWidth;
+    denBounds.right = denBounds.left + numDemWidth;
+
+    emptyFractionBounds.setEmpty();
+    fractionNumDenPaint.getTextBounds("128", 0, "128".length(), emptyFractionBounds);
+    emptyFractionBounds.inset(-marginX, -marginY);
+    emptyFractionBounds.offsetTo(0, 0);
+
+    errorBounds.setEmpty();
+    errorNegPaint.getTextBounds(errorStr, 0, errorStr.length(), errorBounds);
+    errorBounds.inset(-marginX, -marginY);
+    errorBounds.offsetTo(0, 0);
+
+    fractionBounds.setEmpty();
+    if (this.value.getNumerator() == 0) {
+      fractionBounds.union(wholeNumberBounds);
+    } else if (this.value.getWholeNumber() == 0) {
+      fractionBounds.union(numBounds);
+      fractionBounds.union(denBounds);
+    } else {
+      fractionBounds.union(wholeNumberBounds);
+      fractionBounds.union(numBounds);
+      fractionBounds.union(denBounds);
     }
 
-    int totalWidth = wholeNumberBounds.width() + Math.max(numBounds.width(), denBounds.width());
+    fractionBounds.offset((getWidth() - fractionBounds.width()) / 2, marginY);
+    wholeNumberBounds.offset(fractionBounds.left, fractionBounds.top);
+    numBounds.offset(fractionBounds.left, fractionBounds.top);
+    denBounds.offset(fractionBounds.left, fractionBounds.top);
 
-    wholeX = (getWidth() - totalWidth) / 2;
-    wholeY = marginY;
-
-    numBounds.offset(wholeX + wholeNumberBounds.width(), wholeY);
-    denBounds.offset(wholeX + wholeNumberBounds.width(), wholeY + numBounds.height());
-    wholeNumberBounds.offset(wholeX, numBounds.top);
-    wholeNumberBounds.bottom = denBounds.bottom;
-
-    errorBounds.offset(0, Math.max(denBounds.bottom, wholeNumberBounds.bottom));
-
-    numBounds.right = Math.max(numBounds.right, denBounds.right);
-    denBounds.right = Math.max(numBounds.right, denBounds.right);
+    errorBounds.offset(0, fractionBounds.bottom);
 
     CanvasUtils.drawHvAlignedText(canvas, wholeNumberBounds.left, wholeNumberBounds.centerY(), wholeNumberStr, wholeNumberPaint, Paint.Align.LEFT, CanvasUtils.TextVertAlign.Middle);
     if (numeratorStr.length() > 0) {
@@ -138,6 +150,7 @@ public class FractionView extends View {
       CanvasUtils.drawHvAlignedText(canvas, denBounds.centerX(), denBounds.top, denominatorStr, fractionNumDenPaint, Paint.Align.CENTER, CanvasUtils.TextVertAlign.Top);
       canvas.drawLine(numBounds.left, numBounds.bottom - marginY, numBounds.right, numBounds.bottom - marginY, fractionNumDenPaint);
     }
+
     if (Math.abs(this.value.getError()) >= 0.001) {
       Paint paint = this.value.getError() > 0 ? errorPosPaint : errorNegPaint;
       CanvasUtils.drawHvAlignedText(canvas, getWidth() / 2, errorBounds.top, errorStr, paint, Paint.Align.CENTER, CanvasUtils.TextVertAlign.Top);
