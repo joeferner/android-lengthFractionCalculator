@@ -2,7 +2,7 @@
 
     <string name="app_name">Length Fraction Slider</string>
     <string name="menu_about">About</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Length Fraction Slider</string>
     <string name="slider_overlay_description">Slider Overlay</string>
     <string name="default_exact_value">0.0</string>
     

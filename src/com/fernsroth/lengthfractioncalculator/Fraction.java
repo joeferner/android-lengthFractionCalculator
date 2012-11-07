@@ -15,6 +15,7 @@ public class Fraction {
   private int denominator;
   private RoundingDirection roundingDirection;
   private int maxDenominator = DEFAULT_MAX_DENOMINATOR;
+  private float error;
 
   public Fraction() {
     setValue(0.0f);
@@ -36,6 +37,8 @@ public class Fraction {
       this.numerator = (int) FloatMath.floor(floatNumerator);
     }
     reduce();
+    float computedValue = ((float) this.wholeNumber) + (((float) this.numerator) / ((float) this.denominator));
+    this.error = computedValue - this.value;
   }
 
   private void reduce() {
@@ -71,6 +74,10 @@ public class Fraction {
     invalidate();
   }
 
+  public RoundingDirection getRoundingDirection() {
+    return this.roundingDirection;
+  }
+
   public void setMaximumDenominator(int maxDenominator) {
     this.maxDenominator = maxDenominator;
     invalidate();
@@ -82,5 +89,9 @@ public class Fraction {
 
   public int getMaximumDenominator() {
     return this.maxDenominator;
+  }
+
+  public float getError() {
+    return this.error;
   }
 }
