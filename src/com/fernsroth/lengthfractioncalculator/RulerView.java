@@ -29,6 +29,8 @@ public class RulerView extends View {
   private int width;
   private int height;
   private Paint tickTextPaint;
+  private InchesFormat inchesFormat = InchesFormat.Inches;
+
   private Runnable requestLayoutRunnable = new Runnable() {
     public void run() {
       requestLayout();
@@ -173,7 +175,7 @@ public class RulerView extends View {
     float leftInchesX = FloatMath.floor(getInches(scrollLeftX) * 128.0f) / 128.0f;
     float leftMillimetersX = FloatMath.floor(getMillimeters(scrollLeftX));
 
-    for (float in = leftInchesX;; in += 1.0f / 128.0f) {
+    for (float in = leftInchesX; ; in += 1.0f / 128.0f) {
       if (in < 0.0f) {
         continue;
       }
@@ -202,7 +204,7 @@ public class RulerView extends View {
       }
     }
 
-    for (float mm = leftMillimetersX;; mm += 1.0f) {
+    for (float mm = leftMillimetersX; ; mm += 1.0f) {
       if (mm < 0.0f) {
         continue;
       }
@@ -213,7 +215,8 @@ public class RulerView extends View {
 
       if (isRound(mm / 10.0f)) {
         canvas.drawLine(x, centerY + 2, x, centerY + minorCentimeterTickHeight, tickPaint);
-        CanvasUtils.drawHvAlignedText(canvas, x + 4, centerY + minorCentimeterTickHeight, String.format("%dmm", (int) mm), tickTextPaint, Paint.Align.LEFT, CanvasUtils.TextVertAlign.Baseline);
+        String mmStr = String.format("%dmm", (int) mm);
+        CanvasUtils.drawHvAlignedText(canvas, x + 4, centerY + minorCentimeterTickHeight, mmStr, tickTextPaint, Paint.Align.LEFT, CanvasUtils.TextVertAlign.Baseline);
       } else {
         canvas.drawLine(x, centerY + 2, x, centerY + minorMillimeterTickHeight, tickPaint);
       }
@@ -266,5 +269,14 @@ public class RulerView extends View {
 
   public void addOnRulerScrollListener(OnRulerScrollListener listener) {
     onRulerScrollListeners.add(listener);
+  }
+
+  public InchesFormat getInchesFormat() {
+    return inchesFormat;
+  }
+
+  public void setInchesFormat(InchesFormat inchesFormat) {
+    this.inchesFormat = inchesFormat;
+    postInvalidate();
   }
 }

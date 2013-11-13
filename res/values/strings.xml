@@ -5,7 +5,9 @@
     <string name="title_activity_main">Length Fraction Slider</string>
     <string name="slider_overlay_description">Slider Overlay</string>
     <string name="default_exact_value">0.0</string>
-    
+    <string name="value">Value</string>
+    <string name="format">Format</string>
+
     <string-array name="maximum_denominator">
         <item>128</item>
         <item>64</item>
@@ -15,6 +17,11 @@
         <item>4</item>
         <item>2</item>
         <item>1</item>
+    </string-array>
+
+    <string-array name="inches_format">
+        <item>Inches</item>
+        <item>Feet and Inches</item>
     </string-array>
 
 </resources>
